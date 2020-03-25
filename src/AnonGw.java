@@ -16,15 +16,17 @@ public class AnonGw {
             //System.out.println(overlay_peers.toString());
 
             try {
-                ServerSocket welcomeSocket = new ServerSocket(local_TCP_port);
-                welcomeSocket.accept();
+                while (true) {
+                    ServerSocket welcomeSocket = new ServerSocket(local_TCP_port);
+                    welcomeSocket.accept();
 
-                Socket socketSaida = new Socket(target_server, 80);
+                    Socket socketSaida = new Socket(target_server, 80);
+                }
             } catch (IOException e) {
                 System.out.println("Connection TCP error: " + e.getMessage());
             }
 
-*/
+
         } else System.out.println("Not enough arguments.");
 
 
