@@ -22,8 +22,8 @@ public class AnonGw {
         }
 
         try {
-            ServerSocket server = new ServerSocket(3322);
-            System.out.println("Servidor iniciado na porta 3322");
+            ServerSocket server = new ServerSocket(local_TCP_port);
+            System.out.println("Servidor iniciado na porta "+local_TCP_port);
 
             Socket cliente = server.accept();
             System.out.println("Cliente conectado do IP " + cliente.getInetAddress().
