@@ -1,5 +1,4 @@
 import java.io.*;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AnonGw {
-
 
 
     public static void main(String[] args) {
@@ -26,12 +24,13 @@ public class AnonGw {
                 ServerSocket anon = new ServerSocket(local_TCP_port);
                 System.out.println("Anon iniciado na porta " + local_TCP_port);
 
-                Socket server_socket = new Socket(target_server,local_TCP_port);
 
                 Socket client_socket = anon.accept();
                 System.out.println("Cliente conectado do IP " +
                         client_socket.getInetAddress().getHostAddress());
 
+                Socket server_socket = new Socket(target_server, local_TCP_port);
+                System.out.println("Servidor" + target_server + " conectado na porta " + local_TCP_port);
 
                 OutputStream output = server_socket.getOutputStream();
                 PrintWriter writer = new PrintWriter(output, true);
@@ -52,7 +51,6 @@ public class AnonGw {
                 }
 
 
-
                 client_socket.close();
                 entrada.close();
                 server_socket.close();
@@ -61,6 +59,6 @@ public class AnonGw {
             } catch (IOException e) {
                 System.out.println("Error: " + e.getMessage());
             }
-        }else System.out.println("Not enough arguments!");
+        } else System.out.println("Not enough arguments!");
     }
 }
