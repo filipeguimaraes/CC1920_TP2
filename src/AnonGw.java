@@ -1,4 +1,5 @@
-import java.io.IOException;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -8,39 +9,58 @@ import java.util.Scanner;
 
 public class AnonGw {
 
-    private static int local_TCP_port = 80;
-    private static int UDP_port = 6666;
-    private static List<String> overlay_peers;
+
 
     public static void main(String[] args) {
         int argc = args.length;
+        int local_TCP_port;
+        int UDP_port = 6666;
+        List<String> overlay_peers;
+
         if (argc >= 4) {
             String target_server = args[1];
-            int port = Integer.parseInt(args[3]);
+            local_TCP_port = Integer.parseInt(args[3]);
             overlay_peers = new ArrayList<>(Arrays.asList(args).subList(5, argc));
-            //System.out.println(overlay_peers.toString());
-        }
 
-        try {
-            ServerSocket server = new ServerSocket(local_TCP_port);
-            System.out.println("Servidor iniciado na porta "+local_TCP_port);
+            try {
+                ServerSocket anon = new ServerSocket(local_TCP_port);
+                System.out.println("Anon iniciado na porta " + local_TCP_port);
 
-            Socket cliente = server.accept();
-            System.out.println("Cliente conectado do IP " + cliente.getInetAddress().
-                    getHostAddress());
-            Scanner entrada = new Scanner(cliente.getInputStream());
-            while (entrada.hasNextLine()) {
-                System.out.println(entrada.nextLine());
+                Socket server_socket = new Socket(target_server,local_TCP_port);
+
+                Socket client_socket = anon.accept();
+                System.out.println("Cliente conectado do IP " +
+                        client_socket.getInetAddress().getHostAddress());
+
+
+                OutputStream output = server_socket.getOutputStream();
+                PrintWriter writer = new PrintWriter(output, true);
+
+                Scanner entrada = new Scanner(client_socket.getInputStream());
+                while (entrada.hasNextLine()) {
+                    writer.println(entrada.nextLine());
+                }
+
+                InputStream input = server_socket.getInputStream();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+
+
+
+                client_socket.close();
+                entrada.close();
+                server_socket.close();
+                anon.close();
+
+            } catch (IOException e) {
+                System.out.println("Error: " + e.getMessage());
             }
-
-            entrada.close();
-            server.close();
-
-        } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
+        }else System.out.println("Not enough arguments!");
     }
-
-
 }
