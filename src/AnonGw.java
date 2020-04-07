@@ -42,7 +42,7 @@ public class AnonGw {
                 while (entrada.hasNextLine()) {
                     writer.println(entrada.nextLine());
                 }
-
+        /*
                 InputStream input = server_socket.getInputStream();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -53,6 +53,16 @@ public class AnonGw {
                     System.out.println(line);
                 }
 
+         */
+
+
+                OutputStream client_output = client_socket.getOutputStream();
+                PrintWriter writer_cli = new PrintWriter(client_output, true);
+
+                Scanner entrada_server = new Scanner(server_socket.getInputStream());
+                while (entrada_server.hasNextLine()) {
+                    writer_cli.println(entrada_server.nextLine());
+                }
 
                 client_socket.close();
                 entrada.close();
