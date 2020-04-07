@@ -61,7 +61,7 @@ public class AnonGw {
 
                 String line;
 
-                DataOutputStream outToClient = new DataOutputStream(client_socket.getOutputStream());
+                ObjectOutputStream outToClient = new ObjectOutputStream(client_socket.getOutputStream());
 
                 while ((line = reader.readLine()) != null) {
                     outToClient.writeChars(line);
