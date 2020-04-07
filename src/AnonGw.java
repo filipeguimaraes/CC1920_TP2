@@ -56,12 +56,15 @@ public class AnonGw {
          */
 
 
-                OutputStream client_output = client_socket.getOutputStream();
-                PrintWriter writer_cli = new PrintWriter(client_output, true);
+                PrintWriter writer_cli = new PrintWriter(client_socket.getOutputStream(), true);
 
-                Scanner entrada_server = new Scanner(server_socket.getInputStream());
-                while (entrada_server.hasNextLine()) {
-                    writer_cli.println(entrada_server.nextLine());
+                BufferedReader reader = new BufferedReader(
+                                        new InputStreamReader( server_socket.getInputStream()));
+
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    writer_cli.println(line);
                 }
 
                 client_socket.close();
