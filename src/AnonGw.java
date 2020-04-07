@@ -44,6 +44,8 @@ public class AnonGw {
                 }
                 writer.flush();
 
+                entrada.close();
+
                 System.out.println("Chegou aqui");
 
                 InputStream input = server_socket.getInputStream();
