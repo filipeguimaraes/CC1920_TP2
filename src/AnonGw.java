@@ -42,6 +42,7 @@ public class AnonGw {
                 while (entrada.hasNextLine()) {
                     writer.println(entrada.nextLine());
                 }
+                writer.flush();
 
                 System.out.println("Chegou aqui");
 
