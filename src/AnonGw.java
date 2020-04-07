@@ -41,6 +41,7 @@ public class AnonGw {
                 Scanner entrada = new Scanner(client_socket.getInputStream());
                 while (entrada.hasNextLine()) {
                     writer.println(entrada.nextLine());
+                    System.out.println("1");
                 }
                 writer.flush();
                 entrada.close();
