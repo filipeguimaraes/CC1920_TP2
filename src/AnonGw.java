@@ -43,8 +43,8 @@ public class AnonGw {
                     writer.println(entrada.nextLine());
                 }
                 writer.flush();
-
                 entrada.close();
+                client_socket.close();
 
                 System.out.println("Chegou aqui");
 
