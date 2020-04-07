@@ -1,5 +1,4 @@
 import java.io.*;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class AnonGw {
 
             try {
 
-                //Pedido
+
                 ServerSocket anon = new ServerSocket(local_TCP_port);
                 System.out.println("Anon iniciado na porta " + local_TCP_port);
 
@@ -31,8 +30,6 @@ public class AnonGw {
                 Socket client_socket = anon.accept();
                 System.out.println("Cliente conectado do IP " +
                         client_socket.getInetAddress().getHostAddress());
-
-                String clienteIP = client_socket.getInetAddress().getHostAddress();
 
                 Socket server_socket = new Socket(target_server, local_TCP_port);
                 System.out.println("Servidor" + target_server +
@@ -57,38 +54,6 @@ public class AnonGw {
                 }
 
 
-
-
-                //Resposta
-
-
-                Socket server_socket_response = anon.accept();
-                System.out.println("Servidor conectado"+
-                        client_socket.getInetAddress().getHostAddress());
-
-                Socket client_socket_response = new Socket(clienteIP, local_TCP_port);
-                System.out.println("cliente a escutar");
-
-                OutputStream output_resp = client_socket_response.getOutputStream();
-                PrintWriter writer_resp = new PrintWriter(output_resp, true);
-
-                Scanner entrada_resp = new Scanner(server_socket_response.getInputStream());
-                while (entrada_resp.hasNextLine()) {
-                    writer_resp.println(entrada_resp.nextLine());
-                }
-
-                InputStream input_resp = client_socket_response.getInputStream();
-
-                BufferedReader reader_resp = new BufferedReader(new InputStreamReader(input_resp));
-
-                String line_resp;
-
-                while ((line_resp = reader_resp.readLine()) != null) {
-                    System.out.println(line_resp);
-                }
-
-
-                //Fechar conexoes
                 client_socket.close();
                 entrada.close();
                 server_socket.close();
