@@ -40,10 +40,10 @@ public class AnonGw {
 
                 Scanner entrada = new Scanner(client_socket.getInputStream());
                 while (entrada.hasNextLine()) {
-                    writer.println(entrada.nextLine());
                     System.out.println("1");
+                    writer.println(entrada.nextLine());
+                    System.out.println("2");
                 }
-                anon.close();
                 System.out.println("Chegou aqui\n");
 
                 InputStream input = server_socket.getInputStream();
