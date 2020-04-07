@@ -43,7 +43,7 @@ public class AnonGw {
                     writer.println(entrada.nextLine());
                 }
 
-
+                System.out.println("Chegou aqui");
 
                 InputStream input = server_socket.getInputStream();
 
