@@ -26,14 +26,14 @@ public class AnonGw {
                 ServerSocket anon = new ServerSocket(local_TCP_port);
                 System.out.println("Anon iniciado na porta " + local_TCP_port);
 
+                Socket server_socket = new Socket(target_server, local_TCP_port);
+                System.out.println("Servidor" + target_server +
+                        " conectado na porta " + local_TCP_port);
 
                 Socket client_socket = anon.accept();
                 System.out.println("Cliente conectado do IP " +
                         client_socket.getInetAddress().getHostAddress());
 
-                Socket server_socket = new Socket(target_server, local_TCP_port);
-                System.out.println("Servidor" + target_server +
-                            " conectado na porta " + local_TCP_port);
                 OutputStream output = server_socket.getOutputStream();
                 PrintWriter writer = new PrintWriter(output, true);
 
