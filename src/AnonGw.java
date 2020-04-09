@@ -34,7 +34,7 @@ public class AnonGw {
                 Socket server_socket = new Socket(target_server, local_TCP_port);
                 System.out.println("Servidor" + target_server +
                             " conectado na porta " + local_TCP_port);
-
+                System.out.println("Chegou aqui1\n");
                 OutputStream output = server_socket.getOutputStream();
                 PrintWriter writer = new PrintWriter(output, true);
 
@@ -44,7 +44,7 @@ public class AnonGw {
                     writer.println(entrada.nextLine());
                     System.out.println("2");
                 }
-                System.out.println("Chegou aqui\n");
+                System.out.println("Chegou aqui2\n");
 
                 InputStream input = server_socket.getInputStream();
 
@@ -56,7 +56,7 @@ public class AnonGw {
                     System.out.println(line);
                 }
 
-
+                System.out.println("Chegou aqui3\n");
 
 /*
                 OutputStream output_client = client_socket.getOutputStream();
