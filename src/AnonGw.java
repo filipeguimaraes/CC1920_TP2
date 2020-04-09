@@ -43,6 +43,7 @@ public class AnonGw {
                     writer.println(entrada.nextLine());
                     System.out.println("2");
                 }
+                anon.close();
 
                 InputStream input = server_socket.getInputStream();
 
@@ -53,7 +54,6 @@ public class AnonGw {
                 while ((line = reader.readLine()) != null) {
                     System.out.println(line);
                 }
-                anon.close();
 
 /*
                 OutputStream output_client = client_socket.getOutputStream();
