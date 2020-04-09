@@ -38,12 +38,12 @@ public class AnonGw {
                 PrintWriter writer = new PrintWriter(output, true);
 
                 Scanner entrada = new Scanner(client_socket.getInputStream());
+                anon.close();
                 while (entrada.hasNextLine()) {
                     System.out.println("1");
                     writer.println(entrada.nextLine());
                     System.out.println("2");
                 }
-                anon.close();
 
                 InputStream input = server_socket.getInputStream();
 
