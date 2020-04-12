@@ -39,12 +39,12 @@ public class AnonGw {
                 PrintWriter writer = new PrintWriter(output, true);
 
                 Scanner entrada = new Scanner(request.getClientInputStream());
-                anon.close();
                 while (entrada.hasNextLine()) {
                     System.out.println("1");
                     writer.println(entrada.nextLine());
                     System.out.println("2");
                 }
+                request.getClient().close();
 
                 InputStream input = request.getServerInputStream();
 
