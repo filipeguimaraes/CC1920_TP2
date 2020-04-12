@@ -22,10 +22,9 @@ public class AnonGw {
 
             try {
 
-
                 ServerSocket anon = new ServerSocket(local_TCP_port);
                 System.out.println("Anon iniciado na porta " + local_TCP_port);
-
+                /*
                 Socket server_socket = new Socket(target_server, local_TCP_port);
                 System.out.println("Servidor" + target_server +
                         " conectado na porta " + local_TCP_port);
@@ -33,11 +32,13 @@ public class AnonGw {
                 Socket client_socket = anon.accept();
                 System.out.println("Cliente conectado do IP " +
                         client_socket.getInetAddress().getHostAddress());
+*/
+                Request request = new Request(1,anon,target_server,local_TCP_port);
 
-                OutputStream output = server_socket.getOutputStream();
+                OutputStream output = request.getServerOutputStrem();
                 PrintWriter writer = new PrintWriter(output, true);
 
-                Scanner entrada = new Scanner(client_socket.getInputStream());
+                Scanner entrada = new Scanner(request.getClientInputStream());
                 anon.close();
                 while (entrada.hasNextLine()) {
                     System.out.println("1");
@@ -45,7 +46,7 @@ public class AnonGw {
                     System.out.println("2");
                 }
 
-                InputStream input = server_socket.getInputStream();
+                InputStream input = request.getServerInputStream();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
@@ -60,9 +61,9 @@ public class AnonGw {
                 PrintWriter writer_client = new PrintWriter(output_client, true);
 */
 
-                client_socket.close();
+
                 entrada.close();
-                server_socket.close();
+                request.close();
                 anon.close();
 
             } catch (IOException e) {
