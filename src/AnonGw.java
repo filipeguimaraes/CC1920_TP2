@@ -18,18 +18,18 @@ public class AnonGw {
             String target_server = args[1];
             local_TCP_port = Integer.parseInt(args[3]);
             overlay_peers = new ArrayList<>(Arrays.asList(args).subList(5, argc));
+            while (true) {
+                try {
 
-            try {
+                    ServerSocket anon = new ServerSocket(local_TCP_port);
+                    System.out.println("Anon iniciado na porta " + local_TCP_port);
 
-                ServerSocket anon = new ServerSocket(local_TCP_port);
-                System.out.println("Anon iniciado na porta " + local_TCP_port);
+                    Thread server = new ServerConection(anon);
+                    server.start();
+                    Thread client = new ClientConection(anon);
+                    client.start();
 
-                Thread server = new ServerConection(anon);
-                server.start();
-                Thread client = new ClientConection(anon);
-                client.start();
-
-                System.out.println("Teste");
+                    System.out.println("Teste");
                 /*
                 Request request = new Request(1, anon, target_server, local_TCP_port);
 
@@ -59,10 +59,11 @@ public class AnonGw {
                 entrada.close();
                 request.close();
                 */
-                anon.close();
+                    anon.close();
 
-            } catch (IOException e) {
-                System.out.println("Error: " + e.getMessage());
+                } catch (IOException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
             }
         } else System.out.println("Not enough arguments!");
     }
