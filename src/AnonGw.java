@@ -28,6 +28,8 @@ public class AnonGw {
                 server.start();
                 Thread client = new ClientConection(anon);
                 client.start();
+
+                System.out.println("Teste");
                 /*
                 Request request = new Request(1, anon, target_server, local_TCP_port);
 
