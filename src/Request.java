@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Request{
+public class Request {
 
     int id;
 

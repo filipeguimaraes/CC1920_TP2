@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,16 +23,13 @@ public class AnonGw {
 
                 ServerSocket anon = new ServerSocket(local_TCP_port);
                 System.out.println("Anon iniciado na porta " + local_TCP_port);
-                /*
-                Socket server_socket = new Socket(target_server, local_TCP_port);
-                System.out.println("Servidor" + target_server +
-                        " conectado na porta " + local_TCP_port);
 
-                Socket client_socket = anon.accept();
-                System.out.println("Cliente conectado do IP " +
-                        client_socket.getInetAddress().getHostAddress());
-*/
-                Request request = new Request(1,anon,target_server,local_TCP_port);
+                Thread server = new ServerConection(anon);
+                server.start();
+                Thread client = new ClientConection(anon);
+                client.start();
+                /*
+                Request request = new Request(1, anon, target_server, local_TCP_port);
 
                 OutputStream output = request.getServerOutputStrem();
                 PrintWriter writer = new PrintWriter(output, true);
@@ -56,14 +52,11 @@ public class AnonGw {
                     System.out.println(line);
                 }
 
-/*
-                OutputStream output_client = client_socket.getOutputStream();
-                PrintWriter writer_client = new PrintWriter(output_client, true);
-*/
 
 
                 entrada.close();
                 request.close();
+                */
                 anon.close();
 
             } catch (IOException e) {
