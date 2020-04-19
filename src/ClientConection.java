@@ -16,6 +16,7 @@ public class ClientConection extends Thread {
     }
 
     public Socket getClient() {
+
         return client;
     }
 
