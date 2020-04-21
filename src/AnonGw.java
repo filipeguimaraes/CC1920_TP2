@@ -1,70 +1,79 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class AnonGw {
 
 
     public static void main(String[] args) {
         int argc = args.length;
-        int local_TCP_port;
+        int local_TCP_port = 80;
         int UDP_port = 6666;
         List<String> overlay_peers;
+        String target_server = "10.3.3.1";
 
         if (argc >= 4) {
-            String target_server = args[1];
+            target_server = args[1];
             local_TCP_port = Integer.parseInt(args[3]);
             overlay_peers = new ArrayList<>(Arrays.asList(args).subList(5, argc));
-            while (true) {
-                try {
+        } else System.out.println("A usar valores por defeito");
 
-                    ServerSocket anon = new ServerSocket(local_TCP_port);
-                    System.out.println("Anon iniciado na porta " + local_TCP_port);
+        try {
+            ServerSocket anon = new ServerSocket(local_TCP_port);
 
-                    Thread server = new ServerConection(anon);
-                    server.start();
-                    Thread client = new ClientConection(anon);
-                    client.start();
+            ArrayList<String> pergunta = new ArrayList<>();
+            ArrayList<String> resposta = new ArrayList<>();
 
-                    System.out.println("Teste");
-                /*
-                Request request = new Request(1, anon, target_server, local_TCP_port);
+            Request request = new Request(1, anon, target_server, local_TCP_port);
 
-                OutputStream output = request.getServerOutputStrem();
-                PrintWriter writer = new PrintWriter(output, true);
+            PrintWriter writerClient = new PrintWriter(request.getClientOutputStrem(), true);
+            BufferedReader readerCliente = new BufferedReader(
+                    new InputStreamReader(request.clientInputStream));
 
-                Scanner entrada = new Scanner(request.getClientInputStream());
-                while (entrada.hasNextLine()) {
-                    System.out.println("1");
-                    writer.println(entrada.nextLine());
-                    System.out.println("2");
-                }
-                request.getClient().close();
-
-                InputStream input = request.getServerInputStream();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
-                }
-
-
-
-                entrada.close();
-                request.close();
-                */
-                    anon.close();
-
-                } catch (IOException e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
+            String pergunta_line = " ";
+             while (!(pergunta_line.equals(""))) {
+                pergunta_line = readerCliente.readLine();
+                pergunta.add(pergunta_line);
+                System.out.println(pergunta_line);
             }
-        } else System.out.println("Not enough arguments!");
+            System.out.println(pergunta);
+
+
+
+            PrintWriter writerServer = new PrintWriter(request.getServerOutputStrem(), true);
+            BufferedReader readerServidor = new BufferedReader(
+                    new InputStreamReader(request.getServerInputStream()));
+
+            //Enviar a pergunta ao servidor
+            pergunta.forEach(writerServer::println);
+
+            //Resposta do servidor
+            String resposta_line = " ";
+            while (resposta_line != null) {
+                resposta_line = readerServidor.readLine();
+                resposta.add(resposta_line);
+            }
+            System.out.println(resposta);
+
+
+            //Enviar a resposta ao cliente
+            resposta.forEach(writerClient::println);
+
+
+            writerClient.close();
+            readerCliente.close();
+            writerServer.close();
+            writerServer.close();
+            request.close();
+            anon.close();
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
     }
 }

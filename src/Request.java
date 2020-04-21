@@ -23,7 +23,7 @@ public class Request {
         this.serverInputStream = server.getInputStream();
         this.serverOutputStrem = server.getOutputStream();
         this.client = anon.accept();
-        System.out.println("Cliente conectado do IP " + client.getInetAddress().getHostAddress());
+        System.out.println("Cliente conectado com o IP " + client.getInetAddress().getHostAddress());
         this.clientInputStream = client.getInputStream();
         this.clientOutputStrem = client.getOutputStream();
     }
