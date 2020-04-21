@@ -1,8 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +24,7 @@ public class AnonGw {
         try {
             ServerSocket anon = new ServerSocket(local_TCP_port);
 
+
             ArrayList<String> pergunta = new ArrayList<>();
             ArrayList<String> resposta = new ArrayList<>();
 
@@ -34,6 +33,7 @@ public class AnonGw {
             PrintWriter writerClient = new PrintWriter(request.getClientOutputStrem(), true);
             BufferedReader readerCliente = new BufferedReader(
                     new InputStreamReader(request.clientInputStream));
+
 
             String pergunta_line = " ";
              while (!(pergunta_line.equals(""))) {
@@ -52,7 +52,13 @@ public class AnonGw {
             //Enviar a pergunta ao servidor
             pergunta.forEach(writerServer::println);
 
+
             //Resposta do servidor
+            Transfer transferResponse = new Transfer(
+                    new DataInputStream(request.getServerInputStream()),
+                    new DataOutputStream(request.getClientOutputStrem()));
+            transferResponse.transferResponse();
+            /*
             String resposta_line = " ";
             while (resposta_line != null) {
                 resposta_line = readerServidor.readLine();
@@ -63,7 +69,7 @@ public class AnonGw {
 
             //Enviar a resposta ao cliente
             resposta.forEach(writerClient::println);
-
+            */
 
             writerClient.close();
             readerCliente.close();
