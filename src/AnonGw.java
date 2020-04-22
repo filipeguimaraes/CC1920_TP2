@@ -55,9 +55,11 @@ public class AnonGw {
 
             //Resposta do servidor
             Transfer transferResponse = new Transfer(
-                    new DataInputStream(request.getServerInputStream()),
-                    new DataOutputStream(request.getClientOutputStrem()));
-            transferResponse.transferResponse();
+                                request.getServerInputStream(),
+                                request.getClientOutputStrem());
+            //transferResponse.transferResponse();
+            transferResponse.receiveResponse();
+            transferResponse.sendResponse();
             /*
             String resposta_line = " ";
             while (resposta_line != null) {
