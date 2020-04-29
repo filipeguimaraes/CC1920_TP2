@@ -55,18 +55,19 @@ public class AnonGw {
 
             Transfer transferRequest = new Transfer(
                     request.getClientInputStream(),
-                    request.getServerOutputStrem());
-
-            transferRequest.receiveResponse(request.getServerInputStream());
-            transferRequest.sendResponse();
+                    request.getServerOutputStrem(),
+                    request.getServerInputStream());
+            Thread tReq = new Thread(transferRequest);
+            tReq.start();
 
             //Resposta do servidor
             Transfer transferResponse = new Transfer(
                                 request.getServerInputStream(),
-                                request.getClientOutputStrem());
+                                request.getClientOutputStrem(),
+                                request.getClientInputStream());
+            Thread tRes = new Thread(transferResponse);
+            tRes.start();
 
-            transferResponse.receiveResponse(request.getClientInputStream());
-            transferResponse.sendResponse();
 
             request.close();
             anon.close();

@@ -3,7 +3,7 @@ import java.net.DatagramPacket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Transfer {
+public class Transfer implements Runnable {
 
     private static final int OFFSET = 0;
     private static final int MAX_SIZE = 5;
@@ -12,11 +12,14 @@ public class Transfer {
     private final DataInputStream br;
     private final List<DatagramPacket> response;
 
+    private InputStream need_to_close;
 
-    public Transfer(InputStream br, OutputStream bw) {
+
+    public Transfer(InputStream br, OutputStream bw, InputStream close) {
         this.bw = new DataOutputStream(bw);
         this.br = new DataInputStream(br);
         this.response = new ArrayList<>();
+        this.need_to_close = close;
     }
 
     public void receiveResponse(InputStream i) throws IOException {
@@ -46,6 +49,16 @@ public class Transfer {
             bw.write(byte_read, OFFSET, num_read);
             bw.flush();
             num_read = br.read(byte_read, OFFSET, MAX_SIZE);
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            this.receiveResponse(this.need_to_close);
+            this.sendResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
