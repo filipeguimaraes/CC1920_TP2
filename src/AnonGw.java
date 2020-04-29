@@ -24,17 +24,14 @@ public class AnonGw {
         try {
             ServerSocket anon = new ServerSocket(local_TCP_port);
 
-
             ArrayList<String> pergunta = new ArrayList<>();
-            ArrayList<String> resposta = new ArrayList<>();
 
             Request request = new Request(1, anon, target_server, local_TCP_port);
 
-            PrintWriter writerClient = new PrintWriter(request.getClientOutputStrem(), true);
+
             BufferedReader readerCliente = new BufferedReader(
                     new InputStreamReader(request.clientInputStream));
-
-
+            //Receber a pergunta do cliente
             String pergunta_line = " ";
              while (!(pergunta_line.equals(""))) {
                 pergunta_line = readerCliente.readLine();
@@ -44,36 +41,19 @@ public class AnonGw {
             System.out.println(pergunta);
 
 
-
             PrintWriter writerServer = new PrintWriter(request.getServerOutputStrem(), true);
-            BufferedReader readerServidor = new BufferedReader(
-                    new InputStreamReader(request.getServerInputStream()));
-
             //Enviar a pergunta ao servidor
             pergunta.forEach(writerServer::println);
-
 
             //Resposta do servidor
             Transfer transferResponse = new Transfer(
                                 request.getServerInputStream(),
                                 request.getClientOutputStrem());
-            //transferResponse.transferResponse();
+
             transferResponse.receiveResponse();
             transferResponse.sendResponse();
-            /*
-            String resposta_line = " ";
-            while (resposta_line != null) {
-                resposta_line = readerServidor.readLine();
-                resposta.add(resposta_line);
-            }
-            System.out.println(resposta);
 
 
-            //Enviar a resposta ao cliente
-            resposta.forEach(writerClient::println);
-            */
-
-            writerClient.close();
             readerCliente.close();
             writerServer.close();
             writerServer.close();
