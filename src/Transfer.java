@@ -19,7 +19,7 @@ public class Transfer {
         this.response = new ArrayList<>();
     }
 
-    public void receiveResponse() throws IOException {
+    public void receiveResponse(InputStream i) throws IOException {
         byte[] byte_read = new byte[MAX_SIZE];
         int num_read = br.read(byte_read, OFFSET, MAX_SIZE);
 
@@ -27,6 +27,8 @@ public class Transfer {
             response.add(new DatagramPacket(byte_read.clone(), num_read));
             num_read = br.read(byte_read, OFFSET, MAX_SIZE);
         }
+
+        i.close();
     }
 
     public void sendResponse() throws IOException {
