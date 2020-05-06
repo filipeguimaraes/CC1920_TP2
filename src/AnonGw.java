@@ -24,17 +24,14 @@ public class AnonGw {
         try {
             ServerSocket anon = new ServerSocket(local_TCP_port);
 
-
-//            ArrayList<String> pergunta = new ArrayList<>();
-//            ArrayList<String> resposta = new ArrayList<>();
+            ArrayList<String> pergunta = new ArrayList<>();
 
             Request request = new Request(1, anon, target_server, local_TCP_port);
-/*
-            PrintWriter writerClient = new PrintWriter(request.getClientOutputStrem(), true);
+
+
             BufferedReader readerCliente = new BufferedReader(
                     new InputStreamReader(request.clientInputStream));
-
-
+            //Receber a pergunta do cliente
             String pergunta_line = " ";
              while (!(pergunta_line.equals(""))) {
                 pergunta_line = readerCliente.readLine();
@@ -44,31 +41,22 @@ public class AnonGw {
             System.out.println(pergunta);
 
 
-
             PrintWriter writerServer = new PrintWriter(request.getServerOutputStrem(), true);
-            BufferedReader readerServidor = new BufferedReader(
-                    new InputStreamReader(request.getServerInputStream()));
-
             //Enviar a pergunta ao servidor
             pergunta.forEach(writerServer::println);
-*/
-
-            Transfer transferRequest = new Transfer(
-                    request.getClientInputStream(),
-                    request.getServerOutputStrem(),
-                    request.getServerInputStream());
-            Thread tReq = new Thread(transferRequest);
-            tReq.start();
 
             //Resposta do servidor
             Transfer transferResponse = new Transfer(
                                 request.getServerInputStream(),
-                                request.getClientOutputStrem(),
-                                request.getClientInputStream());
-            Thread tRes = new Thread(transferResponse);
-            tRes.start();
+                                request.getClientOutputStrem());
+
+            transferResponse.receiveResponse();
+            transferResponse.sendResponse();
 
 
+            readerCliente.close();
+            writerServer.close();
+            writerServer.close();
             request.close();
             anon.close();
         } catch (IOException e) {
