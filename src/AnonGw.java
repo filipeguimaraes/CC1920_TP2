@@ -5,12 +5,14 @@ import Requests.RequestClient;
 
 import java.io.*;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class AnonGw {
 
@@ -22,7 +24,7 @@ public class AnonGw {
         int argc = args.length;
         int local_TCP_port = 80;
         int UDP_port = 6666;
-        List<String> overlay_peers;
+        List<String> overlay_peers = new ArrayList<>();
         String target_server = "10.3.3.1";
 
         if (argc >= 4) {
@@ -41,7 +43,8 @@ public class AnonGw {
 
             while (true) {
                 Socket client = anon.accept();
-                RequestClient r = new RequestClient(client,new DatagramSocket(UDP_PORT));
+                RequestClient r = new RequestClient(client,new DatagramSocket(UDP_PORT),
+                        InetAddress.getByName(overlay_peers.get(new Random().nextInt(overlay_peers.size()))).getAddress());
 
                 routerData.addRequestClient(r);
             }

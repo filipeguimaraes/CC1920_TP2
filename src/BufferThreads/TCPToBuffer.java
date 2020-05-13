@@ -16,9 +16,9 @@ public class TCPToBuffer implements Runnable{
     private String uid;
 
 
-    public TCPToBuffer (Socket s, PriorityBlockingQueue<HeaderData> data, String t, String id) throws IOException {
+    public TCPToBuffer (Socket s, PriorityBlockingQueue<HeaderData> data, String t, String id, byte[] a) throws IOException {
         tcp = new DataInputStream(s.getInputStream());
-        addr = s.getInetAddress().getAddress();
+        addr = a;
         buff = data;
         indice = 0;
         type = t;

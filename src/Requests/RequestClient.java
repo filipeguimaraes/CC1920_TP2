@@ -20,17 +20,21 @@ public class RequestClient implements Comparable, IRequest {
     private Socket clientSocket;
     private DatagramSocket serverSocket;
 
+    private byte[] addr;
+
     private PriorityBlockingQueue<HeaderData> question;
     private PriorityBlockingQueue<HeaderData> answer;
 
 
-    public RequestClient (Socket s, DatagramSocket ds) {
+    public RequestClient (Socket s, DatagramSocket ds, byte[] a) {
         threads = new ArrayList<>();
 
         uniqueId = UUID.randomUUID().toString();
 
         clientSocket = s;
         serverSocket = ds;
+
+        addr = a.clone();
 
         question = new PriorityBlockingQueue<>();
         answer = new PriorityBlockingQueue<>();
@@ -40,6 +44,9 @@ public class RequestClient implements Comparable, IRequest {
         this.uniqueId = UUID.randomUUID().toString();
     }
 
+    public byte[] getAddr() {
+        return addr;
+    }
 
     public List<Thread> getThreads() {
         return threads;

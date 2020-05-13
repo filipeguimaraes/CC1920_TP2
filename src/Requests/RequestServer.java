@@ -15,6 +15,8 @@ public class RequestServer implements Comparable, IRequest {
 
     private String uniqueId;
 
+    private byte[] addr;
+
     private Socket serverSocket;
     private DatagramSocket clientSocket;
 
@@ -22,7 +24,7 @@ public class RequestServer implements Comparable, IRequest {
     private PriorityBlockingQueue<HeaderData> answer;
 
 
-    public RequestServer (Socket s, DatagramSocket ds) {
+    public RequestServer (Socket s, DatagramSocket ds, byte[] a) {
         threads = new ArrayList<>();
 
         uniqueId = UUID.randomUUID().toString();
@@ -30,8 +32,14 @@ public class RequestServer implements Comparable, IRequest {
         clientSocket = ds;
         serverSocket = s;
 
+        addr = a.clone();
+
         question = new PriorityBlockingQueue<>();
         answer = new PriorityBlockingQueue<>();
+    }
+
+    public byte[] getAddr() {
+        return addr;
     }
 
     public List<Thread> getThreads() {

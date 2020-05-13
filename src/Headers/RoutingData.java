@@ -35,7 +35,7 @@ public class RoutingData {
 
         Thread b2t = new Thread(new BufferToTCP(r.getClientSocket(),r.getQuestion(),"Q",r.getUniqueId()));
         Thread b2u = new Thread(new BufferToUDP(r.getServerSocket(),r.getAnswer()));
-        Thread t2b = new Thread(new TCPToBuffer(r.getClientSocket(),r.getQuestion(),"Q",r.getUniqueId()));
+        Thread t2b = new Thread(new TCPToBuffer(r.getClientSocket(),r.getQuestion(),"Q",r.getUniqueId(),r.getAddr()));
 
         List<Thread> lt = r.getThreads();
 
@@ -55,7 +55,7 @@ public class RoutingData {
 
         Thread b2t = new Thread(new BufferToTCP(r.getServerSocket(),r.getQuestion(),"A",r.getUniqueId()));
         Thread b2u = new Thread(new BufferToUDP(r.getClientSocket(),r.getAnswer()));
-        Thread t2b = new Thread(new TCPToBuffer(r.getServerSocket(),r.getQuestion(),"A",r.getUniqueId()));
+        Thread t2b = new Thread(new TCPToBuffer(r.getServerSocket(),r.getQuestion(),"A",r.getUniqueId(),r.getAddr()));
 
         List<Thread> lt = r.getThreads();
 
@@ -72,7 +72,7 @@ public class RoutingData {
         IRequest req = requests.getOrDefault(hd.getKeyUid(),null);
 
         if (req == null && hd.getType().equals("Q")) {
-            RequestServer rs = new RequestServer(new Socket(SERVER_HOST, SERVER_PORT), new DatagramSocket(UDP_PORT));
+            RequestServer rs = new RequestServer(new Socket(SERVER_HOST, SERVER_PORT), new DatagramSocket(UDP_PORT), hd.getAddress());
             req = rs;
             addRequestServer(rs);
         }
