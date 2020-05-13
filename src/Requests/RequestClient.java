@@ -1,15 +1,18 @@
 package Requests;
 
+import BufferThreads.BufferToTCP;
 import Headers.HeaderData;
 
+import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.PriorityBlockingQueue;
 
-public class RequestClient implements Comparable {
+public class RequestClient implements Comparable, IRequest {
     List<Thread> threads;
 
     private String uniqueId;
@@ -22,20 +25,45 @@ public class RequestClient implements Comparable {
 
 
     public RequestClient (Socket s, DatagramSocket ds) {
-        question = new PriorityBlockingQueue<>();
-        answer = new PriorityBlockingQueue<>();
         threads = new ArrayList<>();
 
         uniqueId = UUID.randomUUID().toString();
 
         clientSocket = s;
         serverSocket = ds;
+
+        question = new PriorityBlockingQueue<>();
+        answer = new PriorityBlockingQueue<>();
     }
 
     public void swapUniqueId() {
         this.uniqueId = UUID.randomUUID().toString();
     }
 
+
+    public List<Thread> getThreads() {
+        return threads;
+    }
+
+    public Socket getClientSocket() {
+        return clientSocket;
+    }
+
+    public DatagramSocket getServerSocket() {
+        return serverSocket;
+    }
+
+    public PriorityBlockingQueue<HeaderData> getQuestion() {
+        return question;
+    }
+
+    public PriorityBlockingQueue<HeaderData> getAnswer() {
+        return answer;
+    }
+
+    public String getUniqueId () {
+        return uniqueId;
+    }
 
     /*
      * methods that create threads to work with the variables
@@ -45,5 +73,16 @@ public class RequestClient implements Comparable {
     public int compareTo(Object o) {
         RequestClient r = (RequestClient) o;
         return uniqueId.compareTo(r.uniqueId);
+    }
+
+
+    @Override
+    public void addUDPToBuffer(HeaderData hd) {
+        answer.add(hd);
+    }
+
+    @Override
+    public String getKeyUid() {
+        return uniqueId + Arrays.toString(serverSocket.getInetAddress().getAddress());
     }
 }

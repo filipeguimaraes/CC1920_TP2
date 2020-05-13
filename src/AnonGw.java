@@ -1,5 +1,12 @@
+import BufferThreads.UDPToBuffer;
+import Headers.RoutingData;
+import Requests.IRequest;
+import Requests.RequestClient;
+
 import java.io.*;
+import java.net.DatagramSocket;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +14,9 @@ import java.util.List;
 
 public class AnonGw {
 
+    public static String SERVER_HOST = "10.3.3.1";
+    public static int SERVER_PORT = 80;
+    public static int UDP_PORT = 6666;
 
     public static void main(String[] args) {
         int argc = args.length;
@@ -22,8 +32,21 @@ public class AnonGw {
         } else System.out.println("A usar valores por defeito");
 
         try {
+            RoutingData routerData = new RoutingData(SERVER_HOST,SERVER_PORT,UDP_PORT);
+
+            Thread threadUDP = new Thread(new UDPToBuffer(routerData,new DatagramSocket(UDP_PORT)));
+            threadUDP.start();
+
             ServerSocket anon = new ServerSocket(local_TCP_port);
 
+            while (true) {
+                Socket client = anon.accept();
+                RequestClient r = new RequestClient(client,new DatagramSocket(UDP_PORT));
+
+                routerData.addRequestClient(r);
+            }
+
+            /*
             ArrayList<String> pergunta = new ArrayList<>();
 
             Request request = new Request(1, anon, target_server, local_TCP_port);
@@ -59,6 +82,7 @@ public class AnonGw {
             writerServer.close();
             request.close();
             anon.close();
+            */
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }

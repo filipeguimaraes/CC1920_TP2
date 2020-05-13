@@ -33,7 +33,11 @@ public class BufferToTCP implements Runnable{
         if(hd != null && hd.getOffset() == indice){
             byte[] b = hd.getMessage();
             tcp.write(b,0,b.length);
+            tcp.flush();
             indice++;
+
+            System.out.println("BufferToTCP: "+ uid + type);
+            System.out.println("BufferToTCP: "+ uid + new String(b));
         }
         else {
             Thread.sleep(1000);

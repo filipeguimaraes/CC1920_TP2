@@ -5,11 +5,12 @@ import Headers.HeaderData;
 import java.net.DatagramSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.PriorityBlockingQueue;
 
-public class RequestServer implements Comparable {
+public class RequestServer implements Comparable, IRequest {
     List<Thread> threads;
 
     private String uniqueId;
@@ -22,14 +23,39 @@ public class RequestServer implements Comparable {
 
 
     public RequestServer (Socket s, DatagramSocket ds) {
-        question = new PriorityBlockingQueue<>();
-        answer = new PriorityBlockingQueue<>();
         threads = new ArrayList<>();
 
         uniqueId = UUID.randomUUID().toString();
 
         clientSocket = ds;
         serverSocket = s;
+
+        question = new PriorityBlockingQueue<>();
+        answer = new PriorityBlockingQueue<>();
+    }
+
+    public List<Thread> getThreads() {
+        return threads;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public Socket getServerSocket() {
+        return serverSocket;
+    }
+
+    public DatagramSocket getClientSocket() {
+        return clientSocket;
+    }
+
+    public PriorityBlockingQueue<HeaderData> getQuestion() {
+        return question;
+    }
+
+    public PriorityBlockingQueue<HeaderData> getAnswer() {
+        return answer;
     }
 
     public void swapUniqueId() {
@@ -44,5 +70,16 @@ public class RequestServer implements Comparable {
     public int compareTo(Object o) {
         RequestServer r = (RequestServer) o;
         return uniqueId.compareTo(r.uniqueId);
+    }
+
+
+    @Override
+    public void addUDPToBuffer(HeaderData hd) {
+        question.add(hd);
+    }
+
+    @Override
+    public String getKeyUid() {
+        return uniqueId + Arrays.toString(clientSocket.getInetAddress().getAddress());
     }
 }

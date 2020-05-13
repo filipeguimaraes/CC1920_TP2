@@ -29,6 +29,10 @@ public class TCPToBuffer implements Runnable{
         HeaderData hd = new HeaderData(type,uid,addr,indice,0,buff_byte.clone());
         indice++;
         buff.put(hd);
+
+
+        System.out.println("TCPToBuffer: "+ hd.getUid() + hd.getType());
+        System.out.println("TCPToBuffer: "+ hd.getUid() + new String(buff_byte));
     }
 
     @Override

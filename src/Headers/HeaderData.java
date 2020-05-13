@@ -1,11 +1,11 @@
 package Headers;
 
-import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class HeaderData implements Comparable {
+public class HeaderData implements Comparable, KeyUniqueId {
 
     private static final byte[] TOKEN = "%".getBytes();
 
@@ -20,10 +20,10 @@ public class HeaderData implements Comparable {
     public HeaderData (String t, String id, byte[] add, int off_set, int l, byte[] m) {
         type = t;
         uid = id;
-        address = add;
+        address = add.clone();
         offset = off_set;
         length = l;
-        message = m;
+        message = m.clone();
     }
 
     public byte[] getMessage () {
@@ -32,6 +32,22 @@ public class HeaderData implements Comparable {
 
     public int getOffset() {
         return offset;
+    }
+
+    public byte[] getAddress() {
+        return address.clone();
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getLength() {
+        return length;
     }
 
     public HeaderData (byte[] data) {
@@ -60,7 +76,7 @@ public class HeaderData implements Comparable {
     }
 
     public byte[] toArrayByte () {
-        List<byte[]> l = new LinkedList<>();
+        List<byte[]> l = new ArrayList<>();
         l.add(address);
         l.add(TOKEN);
         l.add(uid.getBytes());
@@ -86,7 +102,7 @@ public class HeaderData implements Comparable {
     }
 
     public static byte[] insertHeader (String t, String u, byte[] a, String o, byte[] m) {
-        List<byte[]> l = new LinkedList<>();
+        List<byte[]> l = new ArrayList<>();
         l.add(a);
         l.add(TOKEN);
         l.add(u.getBytes());
@@ -139,5 +155,10 @@ public class HeaderData implements Comparable {
     public int compareTo (Object o) {
         HeaderData hd = (HeaderData) o;
         return Integer.compare(this.offset, hd.offset);
+    }
+
+    @Override
+    public String getKeyUid() {
+        return uid + Arrays.toString(address);
     }
 }
