@@ -70,6 +70,9 @@ public class RequestServer implements Comparable, IRequest {
         this.uniqueId = UUID.randomUUID().toString();
     }
 
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
     /*
      * methods that create threads to work with the variables
      */

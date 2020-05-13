@@ -72,6 +72,9 @@ public class RequestClient implements Comparable, IRequest {
         return uniqueId;
     }
 
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
     /*
      * methods that create threads to work with the variables
      */

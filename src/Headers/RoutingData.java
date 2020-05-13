@@ -71,15 +71,14 @@ public class RoutingData {
 
     public void addPacketToRequest (HeaderData hd) throws IOException {
         IRequest req = requests.getOrDefault(hd.getKeyUid(),null);
-        // UID troca sempre o buffer
-        if (req == null && hd.getType().equals("Q")) {
+
+        if ( req == null && hd.getType().equals("Q")) {
             RequestServer rs = new RequestServer(new Socket(SERVER_HOST, SERVER_PORT), datagramSocket, hd.getAddress());
+            rs.setUniqueId(hd.getUid());
             req = rs;
             addRequestServer(rs);
-            System.out.println("addPacketToRequest: " + req.getKeyUid());
         }
-        System.out.println("addPacketToRequest: AAA "+req.getKeyUid());
-        req.addUDPToBuffer(hd);
 
+        req.addUDPToBuffer(hd);
     }
 }
