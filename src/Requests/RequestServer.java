@@ -88,6 +88,6 @@ public class RequestServer implements Comparable, IRequest {
 
     @Override
     public String getKeyUid() {
-        return uniqueId + Arrays.toString(clientSocket.getInetAddress().getAddress());
+        return uniqueId;
     }
 }

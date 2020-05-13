@@ -90,6 +90,6 @@ public class RequestClient implements Comparable, IRequest {
 
     @Override
     public String getKeyUid() {
-        return uniqueId + Arrays.toString(serverSocket.getInetAddress().getAddress());
+        return uniqueId;
     }
 }

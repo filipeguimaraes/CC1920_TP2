@@ -26,13 +26,13 @@ public class TCPToBuffer implements Runnable{
     }
 
     public void storeData (byte[] buff_byte) {
-        HeaderData hd = new HeaderData(type,uid,addr,indice,0,buff_byte.clone());
+        HeaderData hd = new HeaderData(type,uid,addr,indice,indice,buff_byte.clone());
         indice++;
         buff.put(hd);
 
 
-        System.out.println("TCPToBuffer: "+ hd.getUid() + hd.getType());
-        System.out.println("TCPToBuffer: "+ hd.getUid() + new String(buff_byte));
+        System.out.println("TCPToBuffer: " + hd.getUid() + hd.getType());
+        System.out.println("TCPToBuffer: " + new String(buff_byte));
     }
 
     @Override

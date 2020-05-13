@@ -6,24 +6,26 @@ import Headers.RoutingData;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 public class UDPToBuffer  implements Runnable{
     private RoutingData rd;
     private DatagramSocket udp;
 
 
-    public UDPToBuffer (RoutingData r, DatagramSocket u) throws IOException {
+    public UDPToBuffer (RoutingData r, DatagramSocket u) {
         rd = r;
         udp = u;
     }
 
-    public void storeData (byte[] buff_byte) throws IOException {
+    public void storeData (byte[] buff_byte, InetAddress addr) throws IOException {
         HeaderData hd = new HeaderData(buff_byte);
+        hd.setAddress(addr.getAddress());
         rd.addPacketToRequest(hd);
 
 
-        System.out.println("UDPToBuffer: "+ hd.getUid() + hd.getType());
-        System.out.println("UDPToBuffer: "+ hd.getUid() + new String(buff_byte));
+        System.out.println("UDPToBuffer: " + hd.getUid() +" "+addr.toString());
+        System.out.println("UDPToBuffer: " + new String(buff_byte));
     }
 
     @Override
@@ -36,10 +38,12 @@ public class UDPToBuffer  implements Runnable{
         try {
             while (true) {
                 udp.receive(p);
-                storeData(p.getData().clone());
+                storeData(p.getData().clone(),p.getAddress());
             }
         }
-        catch (IOException ignored) {}
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

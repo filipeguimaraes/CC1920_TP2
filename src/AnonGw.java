@@ -34,17 +34,19 @@ public class AnonGw {
         } else System.out.println("A usar valores por defeito");
 
         try {
-            RoutingData routerData = new RoutingData(SERVER_HOST,SERVER_PORT,UDP_PORT);
+            DatagramSocket ds = new DatagramSocket(UDP_PORT);
 
-            Thread threadUDP = new Thread(new UDPToBuffer(routerData,new DatagramSocket(UDP_PORT)));
+            RoutingData routerData = new RoutingData(SERVER_HOST,SERVER_PORT,UDP_PORT,ds);
+
+            Thread threadUDP = new Thread(new UDPToBuffer(routerData,ds));
             threadUDP.start();
 
             ServerSocket anon = new ServerSocket(local_TCP_port);
 
             while (true) {
                 Socket client = anon.accept();
-                RequestClient r = new RequestClient(client,new DatagramSocket(UDP_PORT),
-                        InetAddress.getByName(overlay_peers.get(new Random().nextInt(overlay_peers.size()))).getAddress());
+                RequestClient r = new RequestClient(client,ds,
+                        InetAddress.getByName(overlay_peers.get(0)).getAddress().clone());
 
                 routerData.addRequestClient(r);
             }

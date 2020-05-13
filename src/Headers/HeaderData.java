@@ -50,6 +50,10 @@ public class HeaderData implements Comparable, KeyUniqueId {
         return length;
     }
 
+    public void setAddress(byte[] address) {
+        this.address = address.clone();
+    }
+
     public HeaderData (byte[] data) {
         List<byte[]> lb = HeaderData.split(TOKEN,data);
         address = lb.get(0).clone();
@@ -58,7 +62,7 @@ public class HeaderData implements Comparable, KeyUniqueId {
         length = Integer.parseInt(new String(lb.get(3)));
         offset = Integer.parseInt(new String(lb.get(4)));
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 5 && i < lb.size(); i++)
             lb.remove(i);
 
 
@@ -159,6 +163,6 @@ public class HeaderData implements Comparable, KeyUniqueId {
 
     @Override
     public String getKeyUid() {
-        return uid + Arrays.toString(address);
+        return uid;
     }
 }

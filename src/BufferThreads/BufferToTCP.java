@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.Time;
+import java.util.Arrays;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -36,11 +37,8 @@ public class BufferToTCP implements Runnable{
             tcp.flush();
             indice++;
 
-            System.out.println("BufferToTCP: "+ uid + type);
-            System.out.println("BufferToTCP: "+ uid + new String(b));
-        }
-        else {
-            Thread.sleep(1000);
+            System.out.println("BufferToTCP: " + Arrays.toString(hd.getAddress()));
+            System.out.println("BufferToTCP: " + new String(b));
         }
     }
 
