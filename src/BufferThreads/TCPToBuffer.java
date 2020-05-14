@@ -26,7 +26,7 @@ public class TCPToBuffer implements Runnable{
     }
 
     public void storeData (byte[] buff_byte) {
-        HeaderData hd = new HeaderData(type,uid,addr,indice,indice,buff_byte.clone());
+        HeaderData hd = new HeaderData(type,uid,addr,indice,1,buff_byte.clone());
         indice++;
         buff.put(hd);
 

@@ -61,9 +61,8 @@ public class HeaderData implements Comparable, KeyUniqueId {
         type = new String(lb.get(2));
         length = Integer.parseInt(new String(lb.get(3)));
         offset = Integer.parseInt(new String(lb.get(4)));
-
-        for (int i = 0; i < 5 && i < lb.size(); i++)
-            lb.remove(i);
+        for (int i = 0; i < 5 ; i++)
+            lb.remove(0);
 
 
         int k = 0;
@@ -77,7 +76,9 @@ public class HeaderData implements Comparable, KeyUniqueId {
         for (byte[] br : lb)
             for (byte b : br)
                 message[i++] = b;
+
     }
+
 
     public byte[] toArrayByte () {
         List<byte[]> l = new ArrayList<>();

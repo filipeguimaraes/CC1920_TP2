@@ -25,7 +25,7 @@ public class UDPToBuffer  implements Runnable{
 
 
         System.out.println("UDPToBuffer: " + hd.getUid() +" "+addr.toString());
-        System.out.println("UDPToBuffer: " + new String(buff_byte));
+        System.out.println("UDPToBuffer: " + new String(hd.getMessage()));
     }
 
     @Override
