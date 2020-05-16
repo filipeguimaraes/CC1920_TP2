@@ -18,8 +18,8 @@ public class UDPToBuffer  implements Runnable{
         udp = u;
     }
 
-    public void storeData (byte[] buff_byte, InetAddress addr) throws IOException {
-        HeaderData hd = new HeaderData(buff_byte);
+    public void storeData (byte[] buff_byte, InetAddress addr) throws Exception {
+        HeaderData hd = new HeaderData(HeaderData.decodeArrayByte(buff_byte));
         hd.setAddress(addr.getAddress());
         rd.addPacketToRequest(hd);
 
@@ -40,8 +40,7 @@ public class UDPToBuffer  implements Runnable{
                 udp.receive(p);
                 storeData(p.getData().clone(),p.getAddress());
             }
-        }
-        catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

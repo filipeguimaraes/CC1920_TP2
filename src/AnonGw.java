@@ -36,7 +36,7 @@ public class AnonGw {
         try {
             DatagramSocket ds = new DatagramSocket(UDP_PORT);
 
-            RoutingData routerData = new RoutingData(SERVER_HOST,SERVER_PORT,UDP_PORT,ds);
+            RoutingData routerData = new RoutingData(target_server,local_TCP_port,UDP_PORT,ds);
 
             Thread threadUDP = new Thread(new UDPToBuffer(routerData,ds));
             threadUDP.start();
@@ -45,8 +45,9 @@ public class AnonGw {
 
             while (true) {
                 Socket client = anon.accept();
-                RequestClient r = new RequestClient(client,ds,
-                        InetAddress.getByName(overlay_peers.get(0)).getAddress().clone());
+                RequestClient r;
+                r = new RequestClient(client, ds,
+                        InetAddress.getByName(overlay_peers.get(new Random().nextInt(overlay_peers.size()))).getAddress().clone());
 
                 routerData.addRequestClient(r);
             }
