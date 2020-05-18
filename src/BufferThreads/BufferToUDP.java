@@ -21,17 +21,18 @@ public class BufferToUDP implements Runnable{
         udp = s;
     }
 
-    public void sendData () throws InterruptedException, IOException {
+    public void sendData () throws Exception {
         HeaderData hd =  buff.poll(1, TimeUnit.MINUTES);
         if(hd != null) {
             byte[] b = hd.toArrayByte();
-            DatagramPacket dp = new DatagramPacket(b,b.length);
+            byte[] br = HeaderData.encodeArrayByte(b);
+            DatagramPacket dp = new DatagramPacket(br,br.length);
             dp.setAddress(InetAddress.getByAddress(hd.getAddress()));
             dp.setPort(6666);
             udp.send(dp);
 
 
-            System.out.println("BufferToUDP: " + Arrays.toString(hd.getAddress()));
+            System.out.println("BufferToUDP lenght: " + br.length);
             System.out.println("BufferToUDP: "  + new String(b));
         }
         else {
@@ -45,6 +46,6 @@ public class BufferToUDP implements Runnable{
             while(true)
                 sendData();
         }
-        catch (InterruptedException | IOException ignored) { }
+        catch (Exception ignored) { }
     }
 }

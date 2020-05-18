@@ -1,5 +1,8 @@
 package Headers;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -77,6 +80,31 @@ public class HeaderData implements Comparable, KeyUniqueId {
             for (byte b : br)
                 message[i++] = b;
 
+    }
+
+    public static byte[] encodeArrayByte (byte [] array_of_bytes) throws Exception {
+        Key key = generateKey();
+        Cipher c = Cipher.getInstance("AES");
+        c.init(Cipher.ENCRYPT_MODE, key);
+
+        byte[] encVal = c.doFinal(array_of_bytes);
+        return encVal;
+    }
+
+    public static byte[] decodeArrayByte (byte [] array_of_bytes) throws Exception {
+        Key key = generateKey();
+        Cipher c = Cipher.getInstance("AES");
+        c.init(Cipher.DECRYPT_MODE, key);
+
+        byte[] decValue = c.doFinal(array_of_bytes);
+        return decValue;
+    }
+
+    private static Key generateKey() {
+        byte[] keyValue = new byte[] { 'T', 'h', 'e', 'B', 'e', 's', 't',
+                'S', 'e', 'c', 'r','e', 't', 'K', 'e', 'y' };
+        Key key = new SecretKeySpec(keyValue, "AES");
+        return key;
     }
 
 

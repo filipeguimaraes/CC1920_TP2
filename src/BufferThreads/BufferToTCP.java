@@ -38,6 +38,8 @@ public class BufferToTCP implements Runnable{
             indice++;
 
             System.out.println("BufferToTCP: " + hd.getLength() + " " + new String(hd.getMessage()));
+        } else{
+            if(hd.getOffset()>indice) buff.add(hd);
         }
     }
 
