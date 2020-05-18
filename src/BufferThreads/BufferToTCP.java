@@ -30,14 +30,21 @@ public class BufferToTCP implements Runnable{
     }
 
     public void sendData () throws IOException, InterruptedException {
-        HeaderData hd =  buff.poll(1, TimeUnit.MINUTES);
-        if(hd != null && hd.getOffset() == indice){
-            byte[] b = hd.getMessage();
-            tcp.write(b,0,hd.getLength());
-            tcp.flush();
-            indice++;
+        synchronized ( buff ) {
+            HeaderData hd = buff.peek();
+            if (hd != null && hd.getOffset() == indice) {
+                buff.remove(hd);
 
-            System.out.println("BufferToTCP: " + hd.getLength() + " " + new String(hd.getMessage()));
+                byte[] b = hd.getMessage();
+                tcp.write(b, 0, hd.getLength());
+                tcp.flush();
+                indice++;
+
+                System.out.println("BufferToTCP: " + hd.getLength() + " " + new String(hd.getMessage()));
+            } else {
+                if (hd != null && hd.getOffset() < indice) buff.poll();
+                else buff.wait();
+            }
         }
     }
 

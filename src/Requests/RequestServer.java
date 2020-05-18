@@ -86,7 +86,11 @@ public class RequestServer implements Comparable, IRequest {
 
     @Override
     public void addUDPToBuffer(HeaderData hd) {
+        synchronized ( question) {
+
+        question.notify();
         question.add(hd);
+        }
     }
 
     @Override

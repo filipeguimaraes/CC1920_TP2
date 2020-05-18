@@ -88,7 +88,11 @@ public class RequestClient implements Comparable, IRequest {
 
     @Override
     public void addUDPToBuffer(HeaderData hd) {
+        synchronized (answer){
+
+        answer.notify();
         answer.add(hd);
+        }
     }
 
     @Override
