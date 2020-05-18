@@ -32,7 +32,7 @@ public class BufferToUDP implements Runnable{
             udp.send(dp);
 
 
-            System.out.println("BufferToUDP: " + Arrays.toString(hd.getAddress()));
+            System.out.println("BufferToUDP lenght: " + br.length);
             System.out.println("BufferToUDP: "  + new String(b));
         }
         else {
@@ -46,8 +46,6 @@ public class BufferToUDP implements Runnable{
             while(true)
                 sendData();
         }
-        catch (InterruptedException | IOException ignored) { } catch (Exception e) {
-            e.printStackTrace();
-        }
+        catch (Exception ignored) { }
     }
 }

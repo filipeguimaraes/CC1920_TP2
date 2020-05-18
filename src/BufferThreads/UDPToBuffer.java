@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.Arrays;
 
 public class UDPToBuffer  implements Runnable{
     private RoutingData rd;
@@ -19,12 +20,11 @@ public class UDPToBuffer  implements Runnable{
     }
 
     public void storeData (byte[] buff_byte, InetAddress addr) throws Exception {
+        System.out.println("UDPToBuffer length: " + buff_byte.length);
         HeaderData hd = new HeaderData(HeaderData.decodeArrayByte(buff_byte));
         hd.setAddress(addr.getAddress());
         rd.addPacketToRequest(hd);
 
-
-        System.out.println("UDPToBuffer: " + hd.getUid() +" "+addr.toString());
         System.out.println("UDPToBuffer: " + new String(hd.getMessage()));
     }
 
@@ -38,9 +38,11 @@ public class UDPToBuffer  implements Runnable{
         try {
             while (true) {
                 udp.receive(p);
-                storeData(p.getData().clone(),p.getAddress());
+                byte[] aux = Arrays.copyOfRange(p.getData(),0,p.getLength());
+                storeData(aux,p.getAddress());
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
