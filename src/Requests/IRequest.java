@@ -1,7 +1,7 @@
 package Requests;
 
-import Headers.HeaderData;
-import Headers.KeyUniqueId;
+import DataManagement.HeaderData;
+import DataManagement.KeyUniqueId;
 
 public interface IRequest extends KeyUniqueId {
 

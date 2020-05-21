@@ -1,13 +1,10 @@
 package Requests;
 
-import BufferThreads.BufferToTCP;
-import Headers.HeaderData;
+import DataManagement.HeaderData;
 
-import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -75,9 +72,6 @@ public class RequestClient implements Comparable, IRequest {
     public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
-    /*
-     * methods that create threads to work with the variables
-     */
 
     @Override
     public int compareTo(Object o) {
@@ -88,11 +82,7 @@ public class RequestClient implements Comparable, IRequest {
 
     @Override
     public void addUDPToBuffer(HeaderData hd) {
-        synchronized (answer){
-
-        answer.notify();
         answer.add(hd);
-        }
     }
 
     @Override

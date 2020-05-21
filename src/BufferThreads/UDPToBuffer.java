@@ -1,9 +1,8 @@
 package BufferThreads;
 
-import Headers.HeaderData;
-import Headers.RoutingData;
+import DataManagement.HeaderData;
+import DataManagement.RoutingData;
 
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;

@@ -1,6 +1,6 @@
 package BufferThreads;
 
-import Headers.HeaderData;
+import DataManagement.HeaderData;
 
 import java.io.DataInputStream;
 import java.io.IOException;
