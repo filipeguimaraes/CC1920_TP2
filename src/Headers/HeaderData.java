@@ -10,7 +10,7 @@ import java.util.List;
 
 public class HeaderData implements Comparable, KeyUniqueId {
 
-    private static final byte[] TOKEN = "%".getBytes();
+    private static final byte[] TOKEN = ".%.".getBytes();
 
     private byte[] address;
     private String uid;
