@@ -25,8 +25,8 @@ public class TCPToBuffer implements Runnable{
         uid = id;
     }
 
-    public void storeData (byte[] buff_byte) {
-        HeaderData hd = new HeaderData(type,uid,addr,indice,1,buff_byte.clone());
+    public void storeData (byte[] buff_byte, int size) {
+        HeaderData hd = new HeaderData(type,uid,addr,indice,size,buff_byte.clone());
         indice++;
         buff.put(hd);
 
@@ -38,12 +38,13 @@ public class TCPToBuffer implements Runnable{
     @Override
     public void run() {
         int k = 1;
+        int tam = 0;
         int off_set = 0;
         byte[] buff_byte = new byte[k];
 
         try {
-            while(tcp.read(buff_byte,off_set,k) > 0)
-                storeData(buff_byte);
+            while((tam = tcp.read(buff_byte,off_set,k)) > 0)
+                storeData(buff_byte,tam);
         }
         catch (IOException ignored) {}
 
