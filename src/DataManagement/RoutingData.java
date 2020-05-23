@@ -35,7 +35,7 @@ public class RoutingData {
             r.swapUniqueId();
         }
 
-        Thread b2t = new Thread(new BufferToTCP(r.getClientSocket(),r.getAnswer(),"Q",r.getUniqueId()));
+        Thread b2t = new Thread(new BufferToTCP(r.getClientSocket(),r.getAnswer()));
         Thread b2u = new Thread(new BufferToUDP(r.getServerSocket(),r.getQuestion()));
         Thread t2b = new Thread(new TCPToBuffer(r.getClientSocket(),r.getQuestion(),"Q",r.getUniqueId(),r.getAddr()));
 
@@ -54,7 +54,7 @@ public class RoutingData {
             r.swapUniqueId();
         }
 
-        Thread b2t = new Thread(new BufferToTCP(r.getServerSocket(),r.getQuestion(),"A",r.getUniqueId()));
+        Thread b2t = new Thread(new BufferToTCP(r.getServerSocket(),r.getQuestion()));
         Thread b2u = new Thread(new BufferToUDP(r.getClientSocket(),r.getAnswer()));
         Thread t2b = new Thread(new TCPToBuffer(r.getServerSocket(),r.getAnswer(),"A",r.getUniqueId(),r.getAddr()));
 

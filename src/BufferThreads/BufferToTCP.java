@@ -12,19 +12,12 @@ public class BufferToTCP implements Runnable{
     private PriorityBlockingQueue<HeaderData> buff;
     private int indice;
     private DataOutputStream tcp;
-    private byte[] addr;
-    private String type;
-    private String uid;
 
 
-    //IMPORTA VERIFICAR A ORDEM
-    public BufferToTCP (Socket s, PriorityBlockingQueue<HeaderData> data, String t, String id) throws IOException {
+    public BufferToTCP(Socket s, PriorityBlockingQueue<HeaderData> data) throws IOException {
         tcp = new DataOutputStream(s.getOutputStream());
-        addr = s.getInetAddress().getAddress();
         buff = data;
         indice = 0;
-        type = t;
-        uid = id;
     }
 
     public void sendData () throws IOException, InterruptedException {
